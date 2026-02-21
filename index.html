@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinOpsControl - Track P&L, client profitability, and cash flow across all yo</title>
+    <meta name="description" content="Financial operations dashboard for agencies — client P&L tracking, project profitability, cash flow forecasting, and invoice management.">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a202c;
+            background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%);
+        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        header { text-align: center; padding: 80px 20px 60px; color: white; }
+        .badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.25);
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-size: 15px;
+            margin-bottom: 25px;
+            backdrop-filter: blur(10px);
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        h1 {
+            font-size: 3.2em;
+            margin-bottom: 25px;
+            font-weight: 900;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            line-height: 1.15;
+        }
+        .subtitle {
+            font-size: 1.5em;
+            margin-bottom: 45px;
+            opacity: 0.95;
+            max-width: 850px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+        .cta-primary {
+            display: inline-block;
+            background: white;
+            color: #06B6D4;
+            padding: 20px 50px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 1.25em;
+            font-weight: 700;
+            transition: all 0.3s;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.25);
+            border: 2px solid transparent;
+        }
+        .cta-primary:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 35px rgba(0,0,0,0.35);
+            border-color: rgba(255,255,255,0.5);
+        }
+        .content-section {
+            background: white;
+            border-radius: 16px;
+            padding: 70px 50px;
+            margin: 50px 0;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+        }
+        h2 {
+            font-size: 2.8em;
+            margin-bottom: 50px;
+            color: #2d3748;
+            text-align: center;
+            font-weight: 800;
+            position: relative;
+        }
+        h2::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: #06B6D4;
+            margin: 20px auto 0;
+            border-radius: 2px;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+            margin: 50px 0;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, #F7FAFC 0%, #EDF2F7 100%);
+            padding: 35px;
+            border-radius: 12px;
+            border-left: 5px solid #06B6D4;
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .feature-card h3 {
+            color: #06B6D4;
+            font-size: 1.5em;
+            margin-bottom: 18px;
+            font-weight: 700;
+        }
+        .feature-card p {
+            color: #4A5568;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+        .deliverables-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin: 45px 0;
+        }
+        .deliverable-item {
+            display: flex;
+            align-items: start;
+            padding: 25px;
+            background: #F7FAFC;
+            border-radius: 10px;
+            border: 2px solid #E2E8F0;
+            transition: all 0.3s;
+        }
+        .deliverable-item:hover {
+            border-color: #06B6D4;
+            background: white;
+        }
+        .deliverable-item::before {
+            content: "✓";
+            color: #06B6D4;
+            font-size: 1.8em;
+            font-weight: bold;
+            margin-right: 18px;
+            flex-shrink: 0;
+        }
+        .pricing-section {
+            text-align: center;
+            padding: 50px 30px;
+        }
+        .price {
+            font-size: 3.5em;
+            font-weight: 900;
+            color: #06B6D4;
+            margin: 30px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        .price-subtext {
+            font-size: 1.3em;
+            color: #718096;
+            margin: 25px 0;
+            font-weight: 500;
+        }
+        .guarantee-box {
+            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+            border: 3px solid #10B981;
+            border-radius: 16px;
+            padding: 40px;
+            margin: 50px 0;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.2);
+        }
+        .guarantee-box h3 {
+            color: #059669;
+            font-size: 2em;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+        .guarantee-box p {
+            font-size: 1.2em;
+            color: #065F46;
+            line-height: 1.8;
+        }
+        .target-audience {
+            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+            padding: 35px;
+            border-radius: 12px;
+            border: 2px solid #F59E0B;
+            margin: 40px 0;
+        }
+        .target-audience h3 {
+            color: #92400E;
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        .target-audience p {
+            color: #78350F;
+            font-size: 1.15em;
+            line-height: 1.7;
+        }
+        footer {
+            text-align: center;
+            padding: 50px 30px;
+            color: white;
+            background: rgba(0,0,0,0.25);
+            border-radius: 16px;
+            margin-top: 50px;
+            backdrop-filter: blur(10px);
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.2em; }
+            .subtitle { font-size: 1.2em; }
+            .features-grid { grid-template-columns: 1fr; }
+            .content-section { padding: 40px 25px; }
+        }
+    </style>
+<!-- Google Analytics (GA4) - Measurement ID to be set by Kiki via KIKI-G11 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">14-day free trial</div>
+            <h1>FinOpsControl — Agency Financial Command Center</h1>
+            <p class="subtitle">Track P&L, client profitability, and cash flow across all your agency accounts in one dashboard.</p>
+            <a href="None" class="cta-primary">Start Free Trial</a>
+        </header>
+
+        <div class="content-section"><div class="target-audience"><h3>Perfect For</h3><p>Agency owners, freelance team leads, consulting firm operators</p></div></div>
+
+        <div class="content-section">
+            <h2>What You Get</h2>
+            <div class="deliverables-list"><div class="deliverable-item">Client profitability dashboard</div><div class="deliverable-item">Project-level P&L tracking</div><div class="deliverable-item">Cash flow forecasting</div><div class="deliverable-item">Invoice tracking + aging reports</div><div class="deliverable-item">Team utilization metrics</div></div>
+        </div>
+
+        <div class="content-section"><h2>Challenges We Solve</h2><div class="features-grid"><div class="feature-card"><h3>Challenge #1</h3><p>No visibility into per-client profitability</p></div><div class="feature-card"><h3>Challenge #2</h3><p>Spreadsheet chaos for financial tracking</p></div><div class="feature-card"><h3>Challenge #3</h3><p>Cash flow surprises</p></div></div></div>
+
+        <div class="content-section pricing-section">
+            <h2>Investment</h2>
+            <div class="price">$99</div>
+            <p class="price-subtext">Professional solution with transparent pricing</p>
+            <a href="None" class="cta-primary">Start Free Trial</a>
+        </div>
+
+        <div class="guarantee-box"><h3>💯 Our Guarantee</h3><p>14-day free trial. Cancel anytime.</p></div>
+
+        <footer>
+            <p style="font-size:1.3em; font-weight:600;">&copy; 2026 FinOpsControl</p>
+            <p style="margin-top:15px; opacity:0.85;">All rights reserved | Powered by ASI Network</p>
+        </footer>
+    </div>
+</body>
+</html>
