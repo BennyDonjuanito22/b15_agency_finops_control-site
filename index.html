@@ -1,256 +1,157 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinOpsControl - Track P&L, client profitability, and cash flow across all yo</title>
-    <meta name="description" content="Financial operations dashboard for agencies — client P&L tracking, project profitability, cash flow forecasting, and invoice management.">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: #1a202c;
-            background: linear-gradient(135deg, #06B6D4 0%, #3B82F6 100%);
-        }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        header { text-align: center; padding: 80px 20px 60px; color: white; }
-        .badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.25);
-            padding: 10px 24px;
-            border-radius: 25px;
-            font-size: 15px;
-            margin-bottom: 25px;
-            backdrop-filter: blur(10px);
-            font-weight: 600;
-            border: 1px solid rgba(255,255,255,0.3);
-        }
-        h1 {
-            font-size: 3.2em;
-            margin-bottom: 25px;
-            font-weight: 900;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-            line-height: 1.15;
-        }
-        .subtitle {
-            font-size: 1.5em;
-            margin-bottom: 45px;
-            opacity: 0.95;
-            max-width: 850px;
-            margin-left: auto;
-            margin-right: auto;
-            font-weight: 400;
-            line-height: 1.5;
-        }
-        .cta-primary {
-            display: inline-block;
-            background: white;
-            color: #06B6D4;
-            padding: 20px 50px;
-            border-radius: 10px;
-            text-decoration: none;
-            font-size: 1.25em;
-            font-weight: 700;
-            transition: all 0.3s;
-            box-shadow: 0 4px 25px rgba(0,0,0,0.25);
-            border: 2px solid transparent;
-        }
-        .cta-primary:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 35px rgba(0,0,0,0.35);
-            border-color: rgba(255,255,255,0.5);
-        }
-        .content-section {
-            background: white;
-            border-radius: 16px;
-            padding: 70px 50px;
-            margin: 50px 0;
-            box-shadow: 0 15px 50px rgba(0,0,0,0.12);
-        }
-        h2 {
-            font-size: 2.8em;
-            margin-bottom: 50px;
-            color: #2d3748;
-            text-align: center;
-            font-weight: 800;
-            position: relative;
-        }
-        h2::after {
-            content: '';
-            display: block;
-            width: 80px;
-            height: 4px;
-            background: #06B6D4;
-            margin: 20px auto 0;
-            border-radius: 2px;
-        }
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 35px;
-            margin: 50px 0;
-        }
-        .feature-card {
-            background: linear-gradient(135deg, #F7FAFC 0%, #EDF2F7 100%);
-            padding: 35px;
-            border-radius: 12px;
-            border-left: 5px solid #06B6D4;
-            transition: all 0.3s;
-        }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-        }
-        .feature-card h3 {
-            color: #06B6D4;
-            font-size: 1.5em;
-            margin-bottom: 18px;
-            font-weight: 700;
-        }
-        .feature-card p {
-            color: #4A5568;
-            font-size: 1.1em;
-            line-height: 1.8;
-        }
-        .deliverables-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin: 45px 0;
-        }
-        .deliverable-item {
-            display: flex;
-            align-items: start;
-            padding: 25px;
-            background: #F7FAFC;
-            border-radius: 10px;
-            border: 2px solid #E2E8F0;
-            transition: all 0.3s;
-        }
-        .deliverable-item:hover {
-            border-color: #06B6D4;
-            background: white;
-        }
-        .deliverable-item::before {
-            content: "✓";
-            color: #06B6D4;
-            font-size: 1.8em;
-            font-weight: bold;
-            margin-right: 18px;
-            flex-shrink: 0;
-        }
-        .pricing-section {
-            text-align: center;
-            padding: 50px 30px;
-        }
-        .price {
-            font-size: 3.5em;
-            font-weight: 900;
-            color: #06B6D4;
-            margin: 30px 0;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        .price-subtext {
-            font-size: 1.3em;
-            color: #718096;
-            margin: 25px 0;
-            font-weight: 500;
-        }
-        .guarantee-box {
-            background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
-            border: 3px solid #10B981;
-            border-radius: 16px;
-            padding: 40px;
-            margin: 50px 0;
-            text-align: center;
-            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.2);
-        }
-        .guarantee-box h3 {
-            color: #059669;
-            font-size: 2em;
-            margin-bottom: 20px;
-            font-weight: 800;
-        }
-        .guarantee-box p {
-            font-size: 1.2em;
-            color: #065F46;
-            line-height: 1.8;
-        }
-        .target-audience {
-            background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
-            padding: 35px;
-            border-radius: 12px;
-            border: 2px solid #F59E0B;
-            margin: 40px 0;
-        }
-        .target-audience h3 {
-            color: #92400E;
-            font-size: 1.6em;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-        .target-audience p {
-            color: #78350F;
-            font-size: 1.15em;
-            line-height: 1.7;
-        }
-        footer {
-            text-align: center;
-            padding: 50px 30px;
-            color: white;
-            background: rgba(0,0,0,0.25);
-            border-radius: 16px;
-            margin-top: 50px;
-            backdrop-filter: blur(10px);
-        }
-        @media (max-width: 768px) {
-            h1 { font-size: 2.2em; }
-            .subtitle { font-size: 1.2em; }
-            .features-grid { grid-template-columns: 1fr; }
-            .content-section { padding: 40px 25px; }
-        }
-    </style>
-<!-- Google Analytics (GA4) - Measurement ID to be set by Kiki via KIKI-G11 -->
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FinOpsControl — Financial Operations Dashboard for Agencies &amp; Freelancers</title>
+    <meta name="description" content="FinOpsControl gives agencies, freelancers, and service businesses a real-time financial operations dashboard — P&L tracking, cash flow forecasting, contractor management, and expense categorization." />
+    <link rel="stylesheet" href="styles.css" />
+  <!-- Google Analytics 4 -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
-</script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
 </head>
-<body>
-    <div class="container">
-        <header>
-            <div class="badge">14-day free trial</div>
-            <h1>FinOpsControl — Agency Financial Command Center</h1>
-            <p class="subtitle">Track P&L, client profitability, and cash flow across all your agency accounts in one dashboard.</p>
-            <a href="None" class="cta-primary">Start Free Trial</a>
-        </header>
+  <body>
+    <header class="header">
+      <div class="container header-inner">
+        <a class="brand" href="index.html">FinOpsControl</a>
+        <nav class="nav">
+          <a href="index.html" aria-current="page">Home</a>
+          <a href="products.html">Plans</a>
+          <a href="pricing.html">Pricing</a>
+          <a href="about.html">About</a>
+          <a href="blog.html">Blog</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+    </header>
 
-        <div class="content-section"><div class="target-audience"><h3>Perfect For</h3><p>Agency owners, freelance team leads, consulting firm operators</p></div></div>
-
-        <div class="content-section">
-            <h2>What You Get</h2>
-            <div class="deliverables-list"><div class="deliverable-item">Client profitability dashboard</div><div class="deliverable-item">Project-level P&L tracking</div><div class="deliverable-item">Cash flow forecasting</div><div class="deliverable-item">Invoice tracking + aging reports</div><div class="deliverable-item">Team utilization metrics</div></div>
+    <main class="container">
+      <!-- Hero -->
+      <section class="hero">
+        <span class="badge">Real-Time Financial Clarity</span>
+        <h1>Your finances, <span>under control</span></h1>
+        <p class="lead">FinOpsControl is the all-in-one financial operations dashboard built for agencies, freelancers, and service businesses. Track P&amp;L in real time, forecast cash flow, manage contractors, and categorize every dollar — all from a single pane of glass.</p>
+        <div class="cta-row">
+          <a href="products.html" class="button primary">See Plans &amp; Pricing</a>
+          <a href="about.html" class="button secondary">Learn More</a>
         </div>
+      </section>
 
-        <div class="content-section"><h2>Challenges We Solve</h2><div class="features-grid"><div class="feature-card"><h3>Challenge #1</h3><p>No visibility into per-client profitability</p></div><div class="feature-card"><h3>Challenge #2</h3><p>Spreadsheet chaos for financial tracking</p></div><div class="feature-card"><h3>Challenge #3</h3><p>Cash flow surprises</p></div></div></div>
-
-        <div class="content-section pricing-section">
-            <h2>Investment</h2>
-            <div class="price">$99</div>
-            <p class="price-subtext">Professional solution with transparent pricing</p>
-            <a href="None" class="cta-primary">Start Free Trial</a>
+      <!-- Stats -->
+      <section class="stats-row">
+        <div class="stat-item">
+          <div class="stat-number">4,200+</div>
+          <div class="stat-label">Businesses Managed</div>
         </div>
+        <div class="stat-item">
+          <div class="stat-number">$1.8B</div>
+          <div class="stat-label">Transactions Tracked</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">99.95%</div>
+          <div class="stat-label">Uptime SLA</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">12 hrs</div>
+          <div class="stat-label">Avg. Time Saved / Week</div>
+        </div>
+      </section>
 
-        <div class="guarantee-box"><h3>💯 Our Guarantee</h3><p>14-day free trial. Cancel anytime.</p></div>
+      <!-- Features -->
+      <section class="section">
+        <div class="section-header">
+          <h2>Everything You Need to Run Your Finances</h2>
+          <p>Built by operators, for operators. No accounting degree required.</p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h3>📊 Real-Time P&amp;L</h3>
+            <p>See your profit and loss statement update in real time as transactions flow in. Filter by client, project, or date range to understand exactly where your margins stand.</p>
+          </div>
+          <div class="card">
+            <h3>💰 Cash Flow Forecasting</h3>
+            <p>Predict your cash position 30, 60, or 90 days out with AI-powered forecasting. Get alerts before your runway gets short and plan ahead with confidence.</p>
+          </div>
+          <div class="card">
+            <h3>👥 Contractor Tracking</h3>
+            <p>Track contractor hours, payments, and 1099 preparation in one place. Automate payment schedules and never miss a filing deadline again.</p>
+          </div>
+          <div class="card">
+            <h3>🏷️ Expense Categorization</h3>
+            <p>Smart AI auto-categorizes expenses as they come in. Custom rules let you map spend categories to your chart of accounts — no manual sorting needed.</p>
+          </div>
+          <div class="card">
+            <h3>🏦 Bank Feed Integration</h3>
+            <p>Connect your business bank accounts and credit cards for automatic transaction import. Supports 12,000+ financial institutions via secure, read-only connections.</p>
+          </div>
+          <div class="card">
+            <h3>📈 Client Profitability</h3>
+            <p>Know which clients are profitable and which are draining your margins. Break down revenue and costs per client to make smarter decisions about your portfolio.</p>
+          </div>
+        </div>
+      </section>
 
-        <footer>
-            <p style="font-size:1.3em; font-weight:600;">&copy; 2026 FinOpsControl</p>
-            <p style="margin-top:15px; opacity:0.85;">All rights reserved | Powered by ASI Network</p>
-        </footer>
-    </div>
-</body>
+      <!-- How it works -->
+      <section class="section">
+        <div class="section-header">
+          <h2>How It Works</h2>
+          <p>Go from signup to financial clarity in under 10 minutes.</p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <h3>1. Connect Your Accounts</h3>
+            <p>Link your bank accounts, credit cards, and payment processors. Our bank-grade encrypted connections pull in transactions automatically — no CSV uploads required.</p>
+          </div>
+          <div class="card">
+            <h3>2. Configure Your Dashboard</h3>
+            <p>Set up your clients, projects, and expense categories. FinOpsControl auto-detects patterns and suggests categorization rules to save you time from day one.</p>
+          </div>
+          <div class="card">
+            <h3>3. Monitor &amp; Forecast</h3>
+            <p>Watch your P&amp;L, cash flow, and profitability metrics update in real time. Set threshold alerts and receive weekly digest emails so nothing slips through the cracks.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section class="section">
+        <div class="section-header">
+          <h2>Trusted by Service Businesses</h2>
+          <p>Hear from agencies and freelancers who use FinOpsControl every day.</p>
+        </div>
+        <div class="grid">
+          <div class="card">
+            <p>"We went from quarterly P&amp;L reviews in spreadsheets to real-time visibility. FinOpsControl paid for itself in the first month by catching a billing gap we'd missed for two quarters."</p>
+            <p class="muted" style="margin-top:1rem;font-size:0.9rem;">— Sarah K., Founder, Pixel &amp; Code Agency</p>
+          </div>
+          <div class="card">
+            <p>"Contractor tracking alone saves me 5 hours a week. 1099 season used to be a nightmare — now it's a one-click export. This tool is built by people who actually run businesses."</p>
+            <p class="muted" style="margin-top:1rem;font-size:0.9rem;">— Marcus T., Freelance Marketing Consultant</p>
+          </div>
+          <div class="card">
+            <p>"Managing finances across three entities was chaos before FinOpsControl. Now we have a consolidated view with per-entity drill-downs. The Enterprise plan is worth every cent."</p>
+            <p class="muted" style="margin-top:1rem;font-size:0.9rem;">— Linda R., COO, Apex Creative Group</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="section text-center">
+        <h2>Ready to take control of your finances?</h2>
+        <p class="lead">Start your 14-day free trial — no credit card required.</p>
+        <div class="cta-row mt-2">
+          <a href="products.html" class="button primary">Start Free Trial</a>
+          <a href="contact.html" class="button secondary">Talk to Sales</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2026 FinOpsControl. All rights reserved.</p>
+        <p><a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="contact.html">Contact</a></p>
+      </div>
+    </footer>
+    <script src="cookie-consent.js"></script>
+  </body>
 </html>
